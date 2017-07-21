@@ -1,29 +1,23 @@
-% Problema de busca com Informa��o
-% ----- Mundo do aspirador de p�
-% ----- Estado Inicial e Meta
+% Problema de busca com Informacao
+% ----- Estado Inicial e Estado Final
 
 % Estado Inicial: 
-	inicial([1,s,s]).
+	inicial(roraima).
 
 % Estado Meta: 
-	meta([_,l,l]).
+	meta(rioGrandeDoSul).
 
 % ------------ Acoes do problema
-	acao(entrar1,[2,A,B],[1,A,B],1).
-	acao(entrar2,[1,A,B],[2,A,B],1).
-	acao(aspirar,[1,s,B],[1,l,B],1).
-	acao(aspirar,[2,A,s],[2,A,l],1).
+:- [brasil].
 
 % ------------ funcao heuristica: nula
 
  h(_,0).
 
-
-  
 /*--------------------------------------------------------------+
-| Algoritmo de busca no espa�o de estados                       |  
+| Algoritmo de busca no espaco de estados                       |  
 
-| Para executar, descreva o problema de busca e digite:		|
+| Para executar, descreva o problema de busca e digite:		    |
 | ?- busca(TipoDeBusca). <enter>                                |
 +--------------------------------------------------------------*/
 
@@ -39,9 +33,9 @@ busca(T) :-
    inicial(E),
    busca(T,[_:_:0:E:[]],[],P:G),
    tipo(T,N),
-   format('~nTipo.: ~w',[N]),
-   format('~nPlano: ~w',[P]),
-   format('~nCusto: ~w~n~n',[G]).
+   format('~nTipo: ~w',[N]),
+   format('~nRota: ~w',[P]),
+   format('~nDistancia total percorrida: ~w~n~n',[G]).
 busca(_,[_:_:G:E:C|_],_,P:G) :- 
    meta(E), !,
    reverse(C,P).
@@ -53,7 +47,7 @@ busca(T,[_:_:G:E:C|F],V,P) :-
 
 sucessores(T,G1:E:C,V,R) :-
    findall(F:H:G:S:[A|C],
-	   (acaso(A,E,S,G2), 
+	   (acao(A,E,S,G2), 
 	    not(member(S,V)),  
 	    h(S,H), G is G1+G2, 
 	    (T=4 -> F is G
@@ -74,8 +68,8 @@ embaralha(L,F,[X|NF]) :-
    embaralha(M,R,NF), !.
 
 tipo(1, aleatoria).
-tipo(2, largura).
-tipo(3, profundidade).
+tipo(2, profundidade).
+tipo(3, largura).
 tipo(4, menor_custo).
 tipo(5, melhor_estimativa).
 tipo(6, otima).
